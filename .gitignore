@@ -1,3 +1,4 @@
 shell.nix
 .envrc
 venv
+__pycache__
