@@ -12,5 +12,3 @@ class JotterTest(unittest.TestCase):
         with open(f".xic/{username}/{timestamp}.md") as file:
             result = file.read()
         assert "This is a test fieldnote" in result
-
-
