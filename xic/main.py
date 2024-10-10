@@ -2,6 +2,7 @@ import datetime             # for timestamping
 import logging              # for error logging
 from logging.handlers import RotatingFileHandler    # like recording over old CCTV VHS tapes
 from pathlib import Path    # for handling file paths
+import getpass
 import os                   # for interacting with the operating system
 import sys                  # popping the hood on variables used or maintained by the interpreter
 import argparse             # for making the CLI a notch more flexible (versatile?)
@@ -88,7 +89,7 @@ class Jotter:
         files = os.listdir(self.folder_name) # so far, so good; assigns a list of directory contents to `files`
         files.sort(key=lambda x: os.path.getctime(os.path.join(self.folder_name, x))) # paths, not just the file names (x)
         return os.path.join(self.folder_name, files[-1]) if files else None # this made my head hurt, didn't like it
-        
+
     # [!] Pickard-created organisational function, for piping things in the right direction
     # [?] `file_path` is defined in `write_fieldnote`, but maybe that's ugly?
     def determine_append_or_create(self, file_path, fieldnote, timestamp): # [!] terrible, terrible name
@@ -147,7 +148,7 @@ def setup_argparse(): # [?] don't need to point it at itself?
     return parser
 
 def jot_command(args):
-    jotter = Jotter(os.getlogin())
+    jotter = Jotter(getpass.getuser())
     jotter.create_folder_structure()
     execute_jot(jotter, args.content)
     # [?] how does this instruction differ from passing the second argument in the list, as before?
@@ -175,7 +176,7 @@ if __name__ == "__main__":
             jot_command(args)
         elif args.command == "prompt":
             prompt_command(args)
-        elif args.command == "parse": 
+        elif args.command == "parse":
             parse_command(args)
         else:
             parser.print_help()
